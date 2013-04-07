@@ -1,0 +1,5 @@
+Framework python 
+http://flask.pocoo.org/
+
+Para la persistencia
+http://www.sqlalchemy.org/
