@@ -13,8 +13,8 @@ def hello_world():
 def login():
     return render_template("login.html")
 
-# Estas rutas se colocan para correr la aplicación localamente.
-# En producción el servidor web se encargará de direccionar el contenido estático.
+#Estas rutas se colocan para correr la aplicacion localamente.
+#En produccion el servidor web se encargara de direccionar el contenido estatico.
 @app.route("/css/<path:filename>")
 def css(filename):
 	return send_from_directory('static/css/',filename)
@@ -27,6 +27,6 @@ def js(filename):
 def image(filename):
 	return send_from_directory('static/img/',filename)
 
-#Verifica si se corre como un módulo o como una aplicación principal, utilizado cuando se corre la aplicación localmente
+#Verifica si se corre como un modulo o como una aplicacion principal, utilizado cuando se corre la aplicacion localmente
 if __name__ == '__main__':
     app.run(debug=True)
