@@ -16,7 +16,7 @@ class Usuario(db.Model):
         self.password = password
 
     def autenticado(self):
-    	quitreturn True
+    	return True
 
     def __repr__(self):
         return '<Usuario %r>' % self.nombre_usuario
