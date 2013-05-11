@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>GroWithMe</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <style>
+      body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+            .sidebar-nav {
+                padding: 9px 0;
+            }
+
+            @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+              .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+              }
+            }
+    </style>
+  </head>
+  <body>
+   
+    <div class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="{{ url_for('home') }}">Growith.me</a>
+          <div class="nav-collapse">
+              <ul class="nav">
+                 
+                  <li class="active"><a href="{{ url_for('home') }}">Inicio</a></li>
+                  <li><a href="{{ url_for('about') }}">¿Quiénes somos?</a></li>
+                  <li><a href="{{ url_for('contact') }}">Contacto</a></li>
+                  
+              </ul>
+          </div><!--/.nav-collapse -->
+          <form class="navbar-form pull-right">
+              <input class="span2" type="text" placeholder="Nombre de usuario">
+              <input class="span2" type="password" placeholder="Contraseña">
+              <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+            </form>
+        </div>
+      </div>
+    </div>
+     
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+     
+    
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+  </body>
+</html>

@@ -6,12 +6,16 @@ from flask import send_from_directory
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-    return 'Hello World!'
+def home():
+    return render_template("home.html")
 
-@app.route("/login")
-def login():
-    return render_template("login.html")
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+@app.route("/contact")
+def contact():
+	return render_template("contact.html")
 
 #Estas rutas se colocan para correr la aplicacion localamente.
 #En produccion el servidor web se encargara de direccionar el contenido estatico.
