@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="jumbo">
+	<form class="form-horizontal">
+		<fieldset>
+
+			<!-- Form Name -->
+			<legend>Nuevo Proyecto</legend>
+
+			<!-- Text input-->
+			<div class="control-group">
+				<label class="control-label">Nombre:</label>
+				<div class="controls">
+					<input id="nombre_proyecto" name="nombre_proyecto" type="text" placeholder="Mi proyecto" class="input-xlarge" required="">
+					<p class="help-block">Nombre del proyecto</p>
+				</div>
+			</div>
+
+			<!-- File Button --> 
+			<div class="control-group">
+				<label class="control-label">Imagen:</label>
+				<div class="controls">
+					<input id="imagen" name="imagen" class="input-file" type="file">
+				</div>
+			</div>
+
+			<!-- Textarea -->
+			<div class="control-group">
+				<label class="control-label">Descripción:</label>
+				<div class="controls">                     
+					<textarea id="descripcion" name="descripcion">Descripción del proyecto</textarea>
+				</div>
+			</div>
+
+			<!-- Button (Double) -->
+			<div class="control-group">
+				<label class="control-label"></label>
+				<div class="controls">
+					<button id="boton_cancelar" name="boton_cancelar" class="btn btn-warning">Cancelar</button>
+					<button id="boton_aceptar" name="boton_aceptar" class="btn btn-success">Guardar</button>
+				</div>
+			</div>
+
+		</fieldset>
+	</form>
+
+</div>
+{% endblock %}

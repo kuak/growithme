@@ -78,10 +78,10 @@ class Proyecto(db.Model):
 		return '<Proyecto %r>' % self.nombre_proyecto
 
 class Comentario(db.Model):
-	id = d.Column(db.Integer, primary_key=True)
+	id = db.Column(db.Integer, primary_key=True)
 	id_usuario =  db.Column(db.Integer, db.ForeignKey('usuario.id'))
 	usuario = db.relationship(Usuario, backref = db.backref('comentarios', lazy='dynamic'))
-	id_proyecto = db.Column(db.Integer, db.ForeignKey('proyecto_id'))
+	id_proyecto = db.Column(db.Integer, db.ForeignKey('proyecto.id'))
 	proyecto = db.relationship(Proyecto, backref = db.backref('comentarios', lazy='dynamic'))
 	comentario = db.Column(db.String(250))
 

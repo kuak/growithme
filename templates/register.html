@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="jumbo">
+	<form class="form-horizontal">
+		<fieldset>
+
+			<!-- Form Name -->
+			<legend>Registro de nuevo usuario</legend>
+
+			<!-- Text input-->
+			<div class="control-group">
+				<label class="control-label">Nombre de usuario:</label>
+				<div class="controls">
+					<input id="usuario" name="usuario" type="text" placeholder="Nombre de usuario" class="input-xlarge" required="">
+					<p class="help-block">Nombre que aparecerá en su perfil.</p>
+				</div>
+			</div>
+
+			<!-- Text input-->
+			<div class="control-group">
+				<label class="control-label">Correo electrónico:</label>
+				<div class="controls">
+					<input id="correo" name="correo" type="text" placeholder="micorreo@midominio.com" class="input-xlarge" required="">
+					<p class="help-block">Su correo electrónico no será público</p>
+				</div>
+			</div>
+
+			<!-- Password input-->
+			<div class="control-group">
+				<label class="control-label">Contraseña:</label>
+				<div class="controls">
+					<input id="password" name="password" type="password" placeholder="micontraseña" class="input-xlarge" required="">
+					<p class="help-block">Utilice 6 o más caracteres</p>
+				</div>
+			</div>
+
+			<!-- File Button --> 
+			<div class="control-group">
+				<label class="control-label">Avatar:</label>
+				<div class="controls">
+					<input id="avatar" name="avatar" class="input-file" type="file">
+				</div>
+			</div>
+
+			<!-- Textarea -->
+			<div class="control-group">
+				<label class="control-label">Acerca de mí:</label>
+				<div class="controls">                     
+					<textarea id="acerca" name="acerca"></textarea>
+				</div>
+			</div>
+
+			<!-- Button (Double) -->
+			<div class="control-group">
+				<label class="control-label"></label>
+				<div class="controls">
+					<button id="boton_cancelar" name="boton_cancelar" class="btn btn-warning">Cancelar</button>
+					<button id="boton_aceptar" name="boton_aceptar" class="btn btn-success">Aceptar</button>
+				</div>
+			</div>
+
+		</fieldset>
+	</form>
+
+</div>
+{% endblock %}
