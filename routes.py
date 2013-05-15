@@ -2,6 +2,7 @@ from flask import Flask
 from flask import render_template
 from flask import url_for
 from flask import send_from_directory
+from backend.model import db
 from backend.model import Proyecto
 #authenticate
 from flask import g, session, request, flash, redirect
@@ -119,6 +120,18 @@ def register():
 @app.route("/new-project")
 def new_project():
 	return render_template("new_project.html")
+
+@app.route("/add-project", methods=['POST'])
+def add_project():
+    new_pro = Proyecto(request.form['nombre_proyecto'], request.form['descripcion'], 1)
+    db.session.add(new_pro)
+    db.session.commit()
+    flash('Nuevo proyecto ha sido guardado con exito')
+    return redirect(url_for('home'))
+
+@app.route("/projects")
+def perfil():
+    return render_template("projects.html")
 
 #Estas rutas se colocan para correr la aplicacion localamente.
 #En produccion el servidor web se encargara de direccionar el contenido estatico.

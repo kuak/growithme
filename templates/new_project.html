@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="jumbo">
-	<form class="form-horizontal">
+	<form class="form-horizontal" action="{{url_for('add_project')}}" method="POST">
 		<fieldset>
 
 			<!-- Form Name -->
@@ -36,7 +36,7 @@
 			<div class="control-group">
 				<label class="control-label"></label>
 				<div class="controls">
-					<button id="boton_cancelar" name="boton_cancelar" class="btn btn-warning">Cancelar</button>
+					<a href="/" class="btn btn-warning">Cancelar</a>
 					<button id="boton_aceptar" name="boton_aceptar" class="btn btn-success">Guardar</button>
 				</div>
 			</div>
