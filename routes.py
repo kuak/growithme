@@ -2,14 +2,21 @@ from flask import Flask
 from flask import render_template
 from flask import url_for
 from flask import send_from_directory
+#Uso del modelo
 from backend.model import db
 from backend.model import Proyecto
+#Manejo de archivos
+from flaskext.uploads import UploadSet, IMAGES, configure_uploads
 #authenticate
 from flask import g, session, request, flash, redirect
 from backend.auth import twitter, facebook
 
 app = Flask(__name__)
 app.secret_key = 'Kuak Team key'
+
+#Carpeta para fotos de los proyectos
+fotos = UploadSet(name = 'fotos', extensions = IMAGES, default_dest=lambda app: "fotos/")
+configure_uploads(app, fotos)
 
 @app.before_request
 def before_request():
@@ -126,6 +133,8 @@ def add_project():
     new_pro = Proyecto(request.form['nombre_proyecto'], request.form['descripcion'], 1)
     db.session.add(new_pro)
     db.session.commit()
+    if request.method == 'POST' and 'foto' in request.files:
+        filename = fotos.save(request.files['foto'])
     flash('Nuevo proyecto ha sido guardado con exito')
     return redirect(url_for('home'))
 
