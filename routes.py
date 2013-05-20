@@ -3,48 +3,36 @@ from flask import render_template
 from flask import url_for
 from flask import send_from_directory
 #Uso del modelo
-from backend.model import db
+from backend.model import db, Usuario
 from backend.model import Proyecto
 #Manejo de archivos
-from flaskext.uploads import UploadSet, IMAGES, configure_uploads
+#from flask_uploads import UploadSet, IMAGES, configure_uploads
 #authenticate
 from flask import g, session, request, flash, redirect
-from backend.auth import twitter, facebook
+import backend.auth as auth
 
 app = Flask(__name__)
 app.secret_key = 'Kuak Team key'
 
 #Carpeta para fotos de los proyectos
-fotos = UploadSet(name = 'fotos', extensions = IMAGES, default_dest=lambda app: "fotos/")
-configure_uploads(app, fotos)
+#fotos = UploadSet(name = 'fotos', extensions = IMAGES, default_dest=lambda app: "fotos/")
+#configure_uploads(app, fotos)
 
+#login 
 @app.before_request
 def before_request():
-    g.user = None
-    if 'user_id' in session:
-        #g.user = User.query.get(session['user_id'])
-        print 'before_request:'
-        print 'User Id: ' + session['user_id']
-        print 'oauth_token: '
-        print session['oauth_token']
-        print 'oauth_token_secret: '
-        print session['oauth_token_secret']
+    g.user = auth.usuario_en_session(session)
 
 @app.after_request
 def after_request(response):
-    #db_session.remove()
+    db.session.remove()
     return response
 
-@twitter.tokengetter
+@auth.twitter.tokengetter
 def get_twitter_token():
     user = g.user
     if user is not None:
         return user.oauth_token, user.oauth_secret
-
-@app.route('/')
-def home():
-	proyectos = Proyecto.query.all()
-	return render_template("home.html", proyectos = proyectos)
 
 @app.route("/login")
 def login():
@@ -52,64 +40,67 @@ def login():
 
 @app.route("/logintw")
 def logintw():
-	return twitter.authorize(callback=url_for('callback_twitter', \
-		next=request.args.get('next') or request.referrer or None))
+    return auth.twitter.authorize(callback=url_for('callback_twitter', \
+        next=request.args.get('next') or request.referrer or None))
 
 @app.route('/callback_twitter')
-@twitter.authorized_handler
+@auth.twitter.authorized_handler
 def callback_twitter(resp):
     next_url = request.args.get('next') or url_for('home')
     if resp is None:
         flash(u'You denied the request to sign in.')
         return redirect(next_url)
 
-    user = None
+    user = Usuario.query.filter_by(nickname=resp['screen_name']).first()
 
-    #user = User.query.filter_by(name=resp['screen_name']).first()
-
-    # user never signed on
     if user is None:
-    	print resp['screen_name']
-        #user = User(resp['screen_name'])
-        #db_session.add(user)
+        user = Usuario(resp['screen_name'],'')
+        db.session.add(user)
 
-    # in any case we update the authenciation token in the db
-    # In case the user temporarily revoked access we will have
-    # new tokens here.
-    #user.oauth_token = resp['oauth_token']
-    #user.oauth_secret = resp['oauth_token_secret']
-    print 'oauth_token'
-    print resp['oauth_token']
-    print 'oauth_token_secret'
-    print resp['oauth_token_secret']
-    #db_session.commit()
+    user.oauth_token = resp['oauth_token']
+    user.oauth_token_secret = resp['oauth_token_secret']
+    db.session.commit()
 
-    session['user_id'] = resp['screen_name'] #user.id
-    session['oauth_token_secret'] = resp['oauth_token_secret']
-    session['oauth_token'] = resp['oauth_token']
-    print 'callback_twitter: user id: '+ resp['screen_name'] #user.id
+    session['user_id'] = user.id
+    g.user = user
     flash('You were signed in')
     return redirect(next_url)
 
 @app.route('/loginfb')
 def loginfb():
-	return facebook.authorize(callback=url_for('callback_facebook',
+    return auth.facebook.authorize(callback=url_for('callback_facebook',
         next=request.args.get('next') or request.referrer or None,
         _external=True))
 
 @app.route('/callback_facebook')
-@facebook.authorized_handler
+@auth.facebook.authorized_handler
 def callback_facebook(resp):
-	if resp is None:
-		return 'Access denied: reason=%s error=%s' % (request.args['error_reason'],request.args['error_description'])
-	session['oauth_token'] = (resp['access_token'], '')
-	print str(resp)
-	me = facebook.get('/me')
-	return 'Logged in as id=%s name=%s redirect=%s' % (me.data['id'], me.data['name'], request.args.get('next'))
+    if resp is None:
+        return 'Access denied: reason=%s error=%s' % (request.args['error_reason'],request.args['error_description'])
+    me = auth.facebook.get('/me')
 
-@facebook.tokengetter
+    user = Usuario.query.filter_by(nickname=me.data['name']).first()
+    if user is None:
+        user = Usuario(me.data['name'],'')
+        db.session.add(user)
+    user.oauth_token = resp['access_token']
+    db.session.commit()
+
+    session['user_id'] = user.id
+    g.user = user
+    #return 'Logged in as id=%s name=%s redirect=%s' % (me.data['id'], me.data['name'], request.args.get('next'))
+    return redirect(url_for('home'))
+
+@auth.facebook.tokengetter
 def get_facebook_oauth_token():
-    return session.get('oauth_token')
+    return g.user.oauth_token
+
+#- fin login
+
+@app.route('/')
+def home():
+	proyectos = dProyecto.query.all()
+	return render_template("home.html", proyectos = proyectos)
 
 @app.route("/about")
 def about():
@@ -133,8 +124,8 @@ def add_project():
     new_pro = Proyecto(request.form['nombre_proyecto'], request.form['descripcion'], 1)
     db.session.add(new_pro)
     db.session.commit()
-    if request.method == 'POST' and 'foto' in request.files:
-        filename = fotos.save(request.files['foto'])
+    #if request.method == 'POST' and 'foto' in request.files:
+        #filename = fotos.save(request.files['foto'])
     flash('Nuevo proyecto ha sido guardado con exito')
     return redirect(url_for('home'))
 
