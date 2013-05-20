@@ -22,6 +22,7 @@ app.secret_key = 'Kuak Team key'
 @app.before_request
 def before_request():
     g.user = auth.usuario_en_session(session)
+    print str(g.user)
 
 @app.after_request
 def after_request(response):
@@ -55,6 +56,7 @@ def callback_twitter(resp):
 
     if user is None:
         user = Usuario(resp['screen_name'],'')
+        user.nickname = resp['screen_name']
         db.session.add(user)
 
     user.oauth_token = resp['oauth_token']
@@ -82,6 +84,7 @@ def callback_facebook(resp):
     user = Usuario.query.filter_by(nickname=me.data['name']).first()
     if user is None:
         user = Usuario(me.data['name'],'')
+        user.nickname = me.data['name']
         db.session.add(user)
     user.oauth_token = resp['access_token']
     db.session.commit()

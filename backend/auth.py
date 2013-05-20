@@ -29,7 +29,7 @@ facebook = oauth.remote_app('facebook',
 
 def usuario_en_session(session):
     if 'user_id' in session:
-        user = Usuario.query.get(session['id'])
+        user = Usuario.query.get(session['user_id'])
         if user is None:
             return None
         return user
