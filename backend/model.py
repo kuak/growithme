@@ -1,9 +1,9 @@
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:kuak@localhost/growdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/growdb'
 db = SQLAlchemy(app)
 
 class Rol(db.Model):
@@ -19,6 +19,9 @@ class Rol(db.Model):
 
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    oauth_token = db.Column(db.String(254))
+    oauth_token_secret = db.Column(db.String(512))
+    nickname = db.Column(db.String(32))
     nombre_usuario = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(120))
     id_rol = db.Column(db.Integer, db.ForeignKey('rol.id'))
