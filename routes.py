@@ -136,8 +136,14 @@ def add_project():
     return redirect(url_for('home'))
 
 @app.route("/projects")
-def perfil():
-    return render_template("projects.html")
+def projects():
+    proyectos = Proyecto.query.all()
+    return render_template("projects.html", proyectos = proyectos)
+
+@app.route("/project/<path:_id>")
+def project(_id):
+    proyecto = Proyecto.query.filter_by(id = _id).first()
+    return render_template("project.html", proyecto = proyecto)
 
 #Estas rutas se colocan para correr la aplicacion localamente.
 #En produccion el servidor web se encargara de direccionar el contenido estatico.

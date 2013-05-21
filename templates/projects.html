@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row-fluid">
+    <div class="span12">
+        <ul class="thumbnails">
+            <div class="row-fluid">
+                {%for proyecto in proyectos%}
+                <li class="span4">  
+                    <div class="thumbnail">                          
+                        <h2>{{proyecto.nombre_proyecto}}</h2>
+                        <img src="{{ url_for('fotos', filename=proyecto.url_imagen) }}"></img>
+                        <p>{{proyecto.descripcion}}</p>
+                        <p><a class="btn" href="project/{{proyecto.id}}">Seguir leyendo »</a></p>
+                        <p>{{proyecto.fecha_inicio}}</p>
+                    </div>
+                </li>
+                {%endfor%}
+            </div>
+        </ul>
+    </div>
+</div>
+{% endblock %}
