@@ -1,4 +1,10 @@
 
-*.pyc
+fotos/.DS_Store
 
 .DS_Store
+
+*.pyc
+
+fotos/lula.png
+
+fotos/persuno.png
