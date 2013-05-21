@@ -15,8 +15,8 @@ app = Flask(__name__)
 app.secret_key = 'Kuak Team key'
 
 #Carpeta para fotos de los proyectos
-fotos = UploadSet(name = 'fotos', extensions = IMAGES, default_dest=lambda app: "fotos/")
-configure_uploads(app, fotos)
+imagenes = UploadSet(name = 'fotos', extensions = IMAGES, default_dest=lambda app: "fotos/")
+configure_uploads(app, imagenes)
 
 @app.before_request
 def before_request():
@@ -131,10 +131,12 @@ def new_project():
 @app.route("/add-project", methods=['POST'])
 def add_project():
     new_pro = Proyecto(request.form['nombre_proyecto'], request.form['descripcion'], 1)
+    
+    if request.method == 'POST' and 'foto' in request.files:
+        filename = imagenes.save(request.files['foto'])
+        new_pro.url_imagen = filename
     db.session.add(new_pro)
     db.session.commit()
-    if request.method == 'POST' and 'foto' in request.files:
-        filename = fotos.save(request.files['foto'])
     flash('Nuevo proyecto ha sido guardado con exito')
     return redirect(url_for('home'))
 
@@ -155,6 +157,10 @@ def js(filename):
 @app.route('/img/<path:filename>')
 def image(filename):
 	return send_from_directory('static/img/',filename)
+
+@app.route('/fotos/<path:filename>')
+def fotos(filename):
+    return send_from_directory('fotos/',filename)
 
 #Verifica si se corre como un modulo o como una aplicacion principal, utilizado cuando se corre la aplicacion localmente
 if __name__ == '__main__':

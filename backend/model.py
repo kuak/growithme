@@ -60,12 +60,14 @@ class Proyecto(db.Model):
 	descripcion = db.Column(db.Text)
 	fecha_inicio = db.Column(db.DateTime)
 	fecha_fin = db.Column(db.DateTime)
+	url_imagen = db.Column(db.String(250))
 	id_usuario =  db.Column(db.Integer, db.ForeignKey('usuario.id'))
 	usuario = db.relationship(Usuario, backref = db.backref('proyectos', lazy='dynamic'))
 
-	def __init__(self, nombre_proyecto, descripcion, id_usuario, fecha_inicio = None, fecha_fin = None):
+	def __init__(self, nombre_proyecto, descripcion, id_usuario, url_imagen = None, fecha_inicio = None, fecha_fin = None):
 		self.nombre_proyecto = nombre_proyecto
 		self.descripcion = descripcion
+		self.url_imagen = url_imagen
 		if fecha_inicio is None:
 			fecha_inicio = datetime.utcnow()
 		self.fecha_inicio = fecha_inicio

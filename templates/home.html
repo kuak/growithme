@@ -16,6 +16,7 @@
                                 <li class="span4">  
                                     <div class="thumbnail">                          
                                         <h2>{{proyecto.nombre_proyecto}}</h2>
+                                        <img src="{{ url_for('fotos', filename=proyecto.url_imagen) }}"></img>
                                         <p>{{proyecto.descripcion}}</p>
                                         <p><a class="btn" href="{{proyecto.nombre_proyecto}}">Seguir leyendo »</a></p>
                                         <p>{{proyecto.fecha_inicio}}</p>
