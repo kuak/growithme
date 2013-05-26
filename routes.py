@@ -149,7 +149,16 @@ def add_project():
     db.session.commit()
 
     flash('Nuevo proyecto ha sido guardado con exito')
-    return redirect(url_for('home'))
+    return redirect(url_for('my_projects'))
+
+@app.route("/upd-project", methods=['POST'])
+def upd_project():
+    upd_pro = Proyecto.query.filter_by(id = request.form['id']).first()
+    upd_pro.nombre_proyecto = request.form['nombre_proyecto']
+    upd_pro.descripcion = request.form['descripcion']
+    upd_pro.meta = request.form['meta']
+    db.session.commit()
+    return redirect(url_for('my_projects'))
 
 @app.route("/projects")
 def projects():
