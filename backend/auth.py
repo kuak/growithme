@@ -1,5 +1,6 @@
 from flask_oauth import OAuth
 from model import db, Usuario
+from sqlalchemy import and_
 
 TWITTER_APP_ID = 'F3MOphJZbUNFn7UdbNnwFg'
 TWITTER_APP_SECRET = 'rVBDWIAYEJvehgwgA3fgDiKlXcANNr9shwOjLsi6nA'
@@ -34,3 +35,23 @@ def usuario_en_session(session):
             return None
         return user
     return None
+
+#def add_usuario_from_oauth_provider(req,provider):
+#    if 'twitter' = provider:
+
+def crear_usuario_request(request):
+    print 'crear_usuario_request'
+    print str(request.form)
+    user = Usuario()
+    user.nickname = request.form['nickname']
+    user.first_name = request.form['first_name']
+    user.last_name = request.form['last_name']
+    user.email = request.form['email']
+    user.password = request.form['password']
+    user.oauth_provider = 'growith.me'
+    return user
+
+def existe_usuario(user):
+    u = Usuario.query.filter(Usuario.nickname==user.nickname).filter(Usuario.email==user.email).first()
+    return u
+
