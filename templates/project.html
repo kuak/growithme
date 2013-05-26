@@ -4,16 +4,20 @@
     <div class="span12">
         <ul class="thumbnails">
             <div class="row-fluid">
-                <li class="span4">  
+                <li class="span8">  
                     <div class="thumbnail">                          
                         <h2>{{proyecto.nombre_proyecto}}</h2>
                         <img src="{{ url_for('fotos', filename=proyecto.url_imagen) }}"></img>
                         <p>{{proyecto.descripcion}}</p>
+                        <h3>{{proyecto.meta}}</h3>
                         <p>{{proyecto.fecha_inicio}}</p>
                     </div>
                 </li>
-            </div>
-        </ul>
-    </div>
+                <li class="span4">
+                        <a href="#" class="btn btn-large btn-success">Apoyar</a>
+                </li>
+        </div>
+    </ul>
+</div>
 </div>
 {% endblock %}

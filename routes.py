@@ -124,7 +124,7 @@ def new_project():
 
 @app.route("/add-project", methods=['POST'])
 def add_project():
-    new_pro = Proyecto(request.form['nombre_proyecto'], request.form['descripcion'], 1)
+    new_pro = Proyecto(request.form['nombre_proyecto'], request.form['descripcion'], request.form['meta'], 1)
     
     if request.method == 'POST' and 'foto' in request.files:
         filename = imagenes.save(request.files['foto'])

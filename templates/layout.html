@@ -36,14 +36,26 @@
                   <li><a href="{{ url_for('projects') }}">Proyectos</a></li>
                   <li><a href="{{ url_for('about') }}">¿Quiénes somos?</a></li>
                   <li><a href="{{ url_for('contact') }}">Contacto</a></li>
+
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">Ingresar<strong class="caret"></strong></a>
+                    <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+                      <form method="post" action="login" accept-charset="UTF-8">
+                        <input style="margin-bottom: 15px;" type="text" placeholder="Nombre de usuario" id="usuario" name="usuario">
+                        <input style="margin-bottom: 15px;" type="password" placeholder="Contraseña" id="password" name="password">
+                        <input style="float: left; margin-right: 10px;" type="checkbox" name="remember-me" id="remember-me" value="1">
+                        <label class="string optional" for="user_remember_me">Recordar mis datos</label>
+                        <input class="btn btn-primary btn-block" type="submit" id="sign-in" value="Ingresa">
+                        <label style="text-align:center;margin-top:5px">o iniciar sesión con </label>
+                        <input class="btn btn-primary btn-block" type="button" id="sign-in-google" value="Google">
+                        <input class="btn btn-primary btn-block" type="button" id="sign-in-twitter" value="Twitter">
+                        <input class="btn btn-primary btn-block" type="button" id="sign-in-facebook" value="Facebook">
+                      </form>
+                    </div>
+                  </li>
                   
               </ul>
           </div><!--/.nav-collapse -->
-          <form class="navbar-form pull-right">
-              <input class="span2" type="text" placeholder="Nombre de usuario">
-              <input class="span2" type="password" placeholder="Contraseña">
-              <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-            </form>
         </div>
       </div>
     </div>
@@ -55,6 +67,7 @@
      
     
     <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
   </body>
