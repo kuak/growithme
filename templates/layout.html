@@ -1,11 +1,13 @@
-<!DOCTYPE html>
+<!DO
+CTYPE html>
 <html lang="es">
   <head>
     <meta charset="utf-8">
     <title>GroWithMe</title>
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet">
-    <style>
+    
+	<style>
       body {
                 padding-top: 60px;
                 padding-bottom: 40px;
@@ -22,6 +24,9 @@
                 padding-right: 5px;
               }
             }
+			
+			.navbar .brand { max-height: 40px; overflow: visible;padding-top: 2;padding-bottom: 0; }
+			
     </style>
   </head>
   <body>
@@ -29,7 +34,7 @@
     <div class="navbar navbar-fixed-top navbar-inverse">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="{{ url_for('home') }}">Growith.me</a>
+          <a class="brand" href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/gwm.png') }}"  width="42%" height="42%"></a>
           <div class="nav-collapse">
               <ul class="nav">
                  
