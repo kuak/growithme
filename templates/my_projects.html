@@ -23,7 +23,20 @@
 </div>
     <div class="span8">
         <legend>Mis Proyectos</legend>
-    	<div class="span10">
+        <div class="span12">
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert alert-success">
+                <ul class=flashes>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            {% endwith %}
+            
     		<table class="table table-striped table-condensed">
     			<thead>
     				<tr>

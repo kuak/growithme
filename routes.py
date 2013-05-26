@@ -148,7 +148,7 @@ def add_project():
     db.session.add(new_pro)
     db.session.commit()
 
-    flash('Nuevo proyecto ha sido guardado con exito')
+    flash("Nuevo proyecto guardado con exito")
     return redirect(url_for('my_projects'))
 
 @app.route("/upd-project", methods=['POST'])
@@ -158,6 +158,7 @@ def upd_project():
     upd_pro.descripcion = request.form['descripcion']
     upd_pro.meta = request.form['meta']
     db.session.commit()
+    flash("Proyecto guardado con exito")
     return redirect(url_for('my_projects'))
 
 @app.route("/projects")
