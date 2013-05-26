@@ -3,8 +3,11 @@
 <div class="row-fluid">
     <div class="span12">
         <ul class="thumbnails">
+            {%set count = 0%}
+            {%for proyecto in proyectos%}
+            {%if count == 0%}
             <div class="row-fluid">
-                {%for proyecto in proyectos%}
+                {%endif%}
                 <li class="span4">  
                     <div class="thumbnail">                          
                         <h2>{{proyecto.nombre_proyecto}}</h2>
@@ -13,10 +16,15 @@
                         <h3>{{proyecto.meta}}</h3>
                         <p><a class="btn" href="project/{{proyecto.id}}">Seguir leyendo »</a></p>
                         <p>{{proyecto.fecha_inicio}}</p>
+                        <h2>Quedan {{proyecto.days}} días</h2>
                     </div>
                 </li>
-                {%endfor%}
+                {%set count = count + 1%}
+                {%if count == 3%}
+                {%set count = 0%}
             </div>
+            {%endif%}
+            {%endfor%}
         </ul>
     </div>
 </div>

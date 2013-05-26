@@ -9,12 +9,14 @@
                         <h2>{{proyecto.nombre_proyecto}}</h2>
                         <img src="{{ url_for('fotos', filename=proyecto.url_imagen) }}"></img>
                         <p>{{proyecto.descripcion}}</p>
-                        <h3>{{proyecto.meta}}</h3>
                         <p>{{proyecto.fecha_inicio}}</p>
+                        <p>{{proyecto.fecha_fin}}</p>
                     </div>
                 </li>
                 <li class="span4">
-                        <a href="#" class="btn btn-large btn-success">Apoyar</a>
+                    <h3>0 / {{proyecto.meta}}</h3>
+                    <h2>Quedan {{proyecto.days}} días</2>
+                    <a href="#" class="btn btn-large btn-success">Apoyanos ya!</a>
                 </li>
         </div>
     </ul>

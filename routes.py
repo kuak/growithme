@@ -5,6 +5,8 @@ from flask import send_from_directory
 #Uso del modelo
 from backend.model import db, Usuario
 from backend.model import Proyecto
+#Uso de helpers
+import backend.helpers as helpers 
 #Manejo de archivos
 from flaskext.uploads import UploadSet, IMAGES, configure_uploads
 #authenticate
@@ -102,8 +104,10 @@ def get_facebook_oauth_token():
 
 @app.route('/')
 def home():
-	proyectos = Proyecto.query.all()
-	return render_template("home.html", proyectos = proyectos)
+    proyectos = Proyecto.query.all()
+    for proy in proyectos:
+        proy.days = helpers.fun_daysDiff(proy.fecha_inicio, proy.fecha_fin)
+    return render_template("home.html", proyectos = proyectos)
 
 @app.route("/about")
 def about():
@@ -118,9 +122,21 @@ def register():
 	return render_template("register.html")
 
 ##Rutas para usuarios registrados
+@app.route("/my-projects")
+def my_projects():
+    proyectos = Proyecto.query.all()
+    for pro in proyectos:
+        pro.days = helpers.fun_daysDiff(pro.fecha_inicio, pro.fecha_fin)
+    return render_template("my_projects.html", proyectos = proyectos)
+
 @app.route("/new-project")
 def new_project():
 	return render_template("new_project.html")
+
+@app.route("/modify-project/<path:_id>")
+def modify_project(_id):
+    proyecto = Proyecto.query.filter_by(id = _id).first()
+    return render_template("modify_project.html", proyecto = proyecto)
 
 @app.route("/add-project", methods=['POST'])
 def add_project():
@@ -138,11 +154,14 @@ def add_project():
 @app.route("/projects")
 def projects():
     proyectos = Proyecto.query.all()
+    for pro in proyectos:
+        pro.days = helpers.fun_daysDiff(pro.fecha_inicio, pro.fecha_fin)
     return render_template("projects.html", proyectos = proyectos)
 
 @app.route("/project/<path:_id>")
 def project(_id):
     proyecto = Proyecto.query.filter_by(id = _id).first()
+    proyecto.days = helpers.fun_daysDiff(proyecto.fecha_inicio, proyecto.fecha_fin)
     return render_template("project.html", proyecto = proyecto)
 
 #Estas rutas se colocan para correr la aplicacion localamente.

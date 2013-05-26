@@ -12,6 +12,14 @@ CTYPE html>
 		.navbar .brand { max-height: 40px; overflow: visible;padding-top: 2;padding-bottom: 0; }
 			
     </style>
+
+    <script>
+    $(document).ready(function () {
+        $('label.tree-toggler').click(function () {
+            $(this).parent().children('ul.tree').toggle(300);
+        });
+    });
+</script>
   </head>
   <body>
    

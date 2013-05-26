@@ -11,8 +11,8 @@
                 <li><a href="#"><i class="icon-comment"></i> Comentarios <span class="badge badge-info">10</span></a></li>
                 <li class="active"><label class="nav-header"><i class="icon-list-alt"></i> Proyectos</label>
                 	<ul class="nav nav-list">
-                		<li class="active"><a href="new-project"> Nuevo Proyecto</a></li>
-                		<li><a href="my-projects"> Mis Proyectos</a></li>
+                		<li><a href="{{url_for('new_project')}}"> Nuevo Proyecto</a></li>
+                		<li class="active"><a href="{{url_for('my_projects')}}"> Mis Proyectos</a></li>
                 	</ul>
                 </li>
                 <li class="divider"></li>
@@ -27,13 +27,13 @@
 		<fieldset>
 
 			<!-- Form Name -->
-			<legend>Nuevo Proyecto</legend>
+			<legend>Modificar Proyecto</legend>
 
 			<!-- Text input-->
 			<div class="control-group">
 				<label class="control-label">Nombre:</label>
 				<div class="controls">
-					<input id="nombre_proyecto" name="nombre_proyecto" type="text" placeholder="Mi proyecto" class="input-xlarge" required="">
+					<input id="nombre_proyecto" name="nombre_proyecto" type="text" placeholder="Mi proyecto" class="input-xlarge" required="" value="{{proyecto.nombre_proyecto}}">
 					<p class="help-block">Nombre del proyecto</p>
 				</div>
 			</div>
@@ -50,7 +50,7 @@
 			<div class="control-group">
 				<label class="control-label">Meta:</label>
 				<div class="controls">
-					<input id="meta" name="meta" type="text" placeholder="Mi meta" class="input-xlarge" required="">
+					<input id="meta" name="meta" type="text" placeholder="Mi meta" class="input-xlarge" required="" value="{{proyecto.meta}}">
 					<p class="help-block">Meta de recaudación de fondos</p>
 				</div>
 			</div>
@@ -59,7 +59,7 @@
 			<div class="control-group">
 				<label class="control-label">Descripción:</label>
 				<div class="controls">                     
-					<textarea id="descripcion" name="descripcion"></textarea>
+					<textarea id="descripcion" name="descripcion">{{proyecto.descripcion}}</textarea>
 				</div>
 			</div>
 
