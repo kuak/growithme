@@ -19,23 +19,25 @@ class Rol(db.Model):
 
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    fist_name = db.Column(db.String(64))
+    last_name = db.Column(db.String(64))
+    email = db.Column(db.String(32))
+    nickname = db.Column(db.String(32))
+    password = db.Column(db.String(254))
+    direccion = db.Column(db.String(254))
+    ciudad = db.Column(db.String(32))
+    pais = db.Column(db.String(32))
+    oauth_provider = db.Column(db.String(16))
     oauth_token = db.Column(db.String(254))
     oauth_token_secret = db.Column(db.String(512))
-    nickname = db.Column(db.String(32))
-    nombre_usuario = db.Column(db.String(80), unique=True)
-    password = db.Column(db.String(120))
     id_rol = db.Column(db.Integer, db.ForeignKey('rol.id'))
     rol = db.relationship(Rol, backref = db.backref('usuarios', lazy='dynamic'))
-
-    def __init__(self, nombre_usuario, password):
-        self.nombre_usuario = nombre_usuario
-        self.password = password
 
     def autenticado(self):
     	return True
 
     def __repr__(self):
-        return '<Usuario %r>' % self.nombre_usuario
+        return '<Usuario - id: '+str(self.id)+' nickname: '+self.nickname+'>' 
 
 class Perfil(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
