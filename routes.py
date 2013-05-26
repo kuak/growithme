@@ -151,6 +151,19 @@ def project(_id):
 def css(filename):
 	return send_from_directory('static/css/',filename)
 
+@app.route("/font-awesome/css/<path:filename>")
+def css(filename):
+	return send_from_directory('static/font-awesome/css/',filename)
+
+@app.route("/font-awesome/font/<path:filename>")
+def css(filename):
+	return send_from_directory('static/font-awesome/font/',filename)	
+	
+@app.route("/font-awesome/less/<path:filename>")
+def css(filename):
+	return send_from_directory('static/font-awesome/less/',filename)
+	
+	
 @app.route("/js/<path:filename>")
 def js(filename):
 	return send_from_directory('static/js/',filename)
