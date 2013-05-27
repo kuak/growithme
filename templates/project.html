@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row-fluid">
+    <div class="span12">
+        <ul class="thumbnails">
+            <div class="row-fluid">
+                <li class="span8">  
+                    <div class="thumbnail">                          
+                        <h2>{{proyecto.nombre_proyecto}}</h2>
+                        <img src="{{ url_for('fotos', filename=proyecto.url_imagen) }}"></img>
+                        <p>{{proyecto.descripcion}}</p>
+                        <p>{{proyecto.fecha_inicio}}</p>
+                        <p>{{proyecto.fecha_fin}}</p>
+                    </div>
+                </li>
+                <li class="span4">
+                    <h3>0 / {{proyecto.meta}}</h3>
+                    <h2>Quedan {{proyecto.days}} días</2>
+                    <a href="#" class="btn btn-large btn-success">Apoyanos ya!</a>
+                </li>
+        </div>
+    </ul>
+</div>
+</div>
+{% endblock %}

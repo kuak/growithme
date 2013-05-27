@@ -1,48 +1,92 @@
-<!DOCTYPE html>
+<!DO
+CTYPE html>
 <html lang="es">
   <head>
     <meta charset="utf-8">
     <title>GroWithMe</title>
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+	
+		
+	
+	
+	
     <style>
-      body {
-                padding-top: 60px;
-                padding-bottom: 40px;
-            }
-            .sidebar-nav {
-                padding: 9px 0;
-            }
+		.navbar .brand { max-height: 40px; overflow: visible;padding-top: 2;padding-bottom: 0; }
 
-            @media (max-width: 980px) {
-            /* Enable use of floated navbar text */
-              .navbar-text.pull-right {
-                float: none;
-                padding-left: 5px;
-                padding-right: 5px;
-              }
-            }
+			
     </style>
+
+    <script>
+    $(document).ready(function () {
+    	$('label.tree-toggler').click(function () {
+    		$(this).parent().children('ul.tree').toggle(300);
+    	});
+    });
+    </script>
+
   </head>
   <body>
    
-    <div class="navbar navbar-fixed-top navbar-inverse">
+ <!-- Part 1: Wrap all page content here -->
+       <div class="navbar  navbar-inverse">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="{{ url_for('home') }}">Growith.me</a>
-          <div class="nav-collapse">
-              <ul class="nav">
-                 
-                  <li class="active"><a href="{{ url_for('home') }}">Inicio</a></li>
-                  <li><a href="{{ url_for('about') }}">¿Quiénes somos?</a></li>
-                  <li><a href="{{ url_for('contact') }}">Contacto</a></li>
-                  
-              </ul>
+			<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+				<a class="brand" href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/gwm.png') }}" ></a>
+				<div class="nav-collapse">
+					<ul class="nav">
+						<li class="active"><a href="{{ url_for('home') }}">Inicio</a></li>
+						<li><a href="{{ url_for('projects') }}">Proyectos</a></li>
+						<li><a href="{{ url_for('about') }}">¿Quiénes somos?</a></li>
+						<li><a href="{{ url_for('contact') }}">Contacto</a></li>
+					</ul>
+					
+					
+					<ul class="nav pull-right">
+						<li class="dropdown">
+							<a class="dropdown-toggle" href="#" data-toggle="dropdown">Ingresar<strong class="caret"></strong></a>
+							<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+							  <form method="post" action="login" accept-charset="UTF-8">
+								
+								<div class="input-prepend">
+									<span class="add-on"><i class="icon-globe"></i></span>
+									<input class="span2" type="text" placeholder="Nombre de usuario" id="usuario" name="usuario">
+								</div>
+								<div class="input-prepend">
+									<span class="add-on"><i class="icon-key"></i></span>
+									<input class="span" type="password" placeholder="Contraseña" id="password" name="password">
+								</div>
+								<input style="float: left; margin-right: 10px;" type="checkbox" name="remember-me" id="remember-me" value="1">
+								<label class="string optional" for="user_remember_me">Recordar mis datos</label>
+								<input class="btn btn-primary btn-block" type="submit" id="sign-in" value="Ingresa">
+								<label style="text-align:center;margin-top:5px">o iniciar sesión con </label>
+								<button type="submit" class="btn btn-danger btn-block" id="sign-in-google"> <i class="icon-google-plus-sign icon-large"></i> google+</button>
+								<button type="submit" class="btn btn-info btn-block" id="sign-in-twitter"> <i class="icon-twitter-sign icon-large"></i> twitter</button>
+								<button type="submit" class="btn btn-primary btn-block" id="sign-in-facebook"> <i class="icon-facebook-sign icon-large"></i> facebook</button>
+								</form>
+							</div>
+						  </li>
+					  </ul>
+				  
+					
+				</div>
+					
+			
+			
+				
+			
+				
+					
+					
+		
+				
           </div><!--/.nav-collapse -->
-          <form class="navbar-form pull-right">
-              <input class="span2" type="text" placeholder="Nombre de usuario">
-              <input class="span2" type="password" placeholder="Contraseña">
-              <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-            </form>
         </div>
       </div>
     </div>
@@ -54,6 +98,7 @@
      
     
     <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
   </body>

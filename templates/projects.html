@@ -1,16 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="row-fluid">
-    <div class="span4">
-        <!--Sidebar content-->
-        <img src="{{ url_for('static', filename='img/kuaklogo.png') }}"  width="200" height="150" />
-        <h2>Grow With Me</h2>
-        <p>Crowfounding para ayuda humanitaria.</p>
-        <p><a class="btn" href="#">Seguir leyendo »</a></p>
-    </div>
-
-
-    <div class="span8">
+    <div class="span12">
         <ul class="thumbnails">
             {%set count = 0%}
             {%for proyecto in proyectos%}

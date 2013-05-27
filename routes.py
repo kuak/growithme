@@ -8,7 +8,7 @@ from backend.model import Proyecto
 #Uso de helpers
 import backend.helpers as helpers 
 #Manejo de archivos
-from flask_uploads import UploadSet, IMAGES, configure_uploads
+from flaskext.uploads import UploadSet, IMAGES, configure_uploads
 #authenticate
 from flask import g, session, request, flash, redirect
 import backend.auth as auth
@@ -236,6 +236,19 @@ def css(filename):
 def css(filename):
 	return send_from_directory('static/css/',filename)
 
+@app.route("/font-awesome/css/<path:filename>")
+def css(filename):
+	return send_from_directory('static/font-awesome/css/',filename)
+
+@app.route("/font-awesome/font/<path:filename>")
+def css(filename):
+	return send_from_directory('static/font-awesome/font/',filename)	
+	
+@app.route("/font-awesome/less/<path:filename>")
+def css(filename):
+	return send_from_directory('static/font-awesome/less/',filename)
+	
+	
 @app.route("/js/<path:filename>")
 def js(filename):
 	return send_from_directory('static/js/',filename)
@@ -243,6 +256,10 @@ def js(filename):
 @app.route('/img/<path:filename>')
 def image(filename):
 	return send_from_directory('static/img/',filename)
+
+@app.route('/fotos/<path:filename>')
+def fotos(filename):
+    return send_from_directory('fotos/',filename)
 
 #Verifica si se corre como un modulo o como una aplicacion principal, utilizado cuando se corre la aplicacion localmente
 if __name__ == '__main__':
