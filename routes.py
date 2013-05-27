@@ -24,7 +24,7 @@ configure_uploads(app, imagenes)
 @app.before_request
 def before_request():
     g.user = auth.usuario_en_session(session)
-    print str(g.user)
+    #print str(g.user)
 
 @app.after_request
 def after_request(response):
@@ -37,9 +37,23 @@ def get_twitter_token():
     if user is not None:
         return user.oauth_token, user.oauth_secret
 
-@app.route("/login")
+@app.route("/login",methods=['GET','POST'])
 def login():
-    return render_template("login.html")
+    if g.user is None:
+        if request.method == 'GET':
+            return render_template("login.html")
+        else:
+            user = Usuario.query.filter(Usuario.email==request.form['email']).filter(Usuario.password==request.form['password']).first()
+            if user is None:
+                return error_login('Usuario no existe')
+            else:
+                session['user_id'] = user.id
+                session['oauth_provider'] = user.oauth_provider
+                g.user = user
+                return redirect(url_for('home'))
+    else:
+        return "Usuario logueado "+str(g.user.nickname)
+
 
 @app.route("/logintw")
 def logintw():
@@ -51,24 +65,27 @@ def logintw():
 def callback_twitter(resp):
     next_url = request.args.get('next') or url_for('home')
     if resp is None:
-        flash(u'You denied the request to sign in.')
+        error_login(u'You denied the request to sign in.')
         return redirect(next_url)
 
     user = Usuario.query.filter_by(nickname=resp['screen_name']).first()
 
     if user is None:
-        user = Usuario(resp['screen_name'],'')
+        user = Usuario()
         user.nickname = resp['screen_name']
+        user.oauth_provider = 'twitter'
         db.session.add(user)
 
     user.oauth_token = resp['oauth_token']
     user.oauth_token_secret = resp['oauth_token_secret']
+
     db.session.commit()
 
     session['user_id'] = user.id
+    session['oauth_provider'] = user.oauth_provider
     g.user = user
-    flash('You were signed in')
-    return redirect(next_url)
+
+    return redirect(url_for('home'))
 
 @app.route('/loginfb')
 def loginfb():
@@ -80,25 +97,32 @@ def loginfb():
 @auth.facebook.authorized_handler
 def callback_facebook(resp):
     if resp is None:
-        return 'Access denied: reason=%s error=%s' % (request.args['error_reason'],request.args['error_description'])
-    me = auth.facebook.get('/me')
+        return error_login('Access denied: reason=%s error=%s' % (request.args['error_reason'],request.args['error_description']))
 
-    user = Usuario.query.filter_by(nickname=me.data['name']).first()
+    user_tmp = Usuario()
+    user_tmp.oauth_token = resp['access_token']
+    g.user = user_tmp
+
+    me = auth.facebook.get('/me')
+    user = Usuario.query.filter(Usuario.nickname==me.data['name']).filter(Usuario.email==me.data['email']).first()
+
     if user is None:
-        user = Usuario(me.data['name'],'')
+        user = Usuario()
+        user.email = me.data['email']
+        user.oauth_provider = "facebook"
         user.nickname = me.data['name']
         db.session.add(user)
     user.oauth_token = resp['access_token']
     db.session.commit()
 
     session['user_id'] = user.id
+    session['oauth_provider'] = user.oauth_provider
     g.user = user
-    #return 'Logged in as id=%s name=%s redirect=%s' % (me.data['id'], me.data['name'], request.args.get('next'))
     return redirect(url_for('home'))
 
 @auth.facebook.tokengetter
 def get_facebook_oauth_token():
-    return g.user.oauth_token
+    return (g.user.oauth_token,'')
 
 #- fin login
 
@@ -117,9 +141,25 @@ def about():
 def contact():
 	return render_template("contact.html")
 
-@app.route("/register")
+@app.route("/register", methods=['GET','POST'])
 def register():
-	return render_template("register.html")
+    if request.method == 'GET':
+        return render_template("register.html")
+    else:
+        user = auth.crear_usuario_request(request)
+        if auth.existe_usuario(user) is None:
+            db.session.add(user)
+            db.session.commit()
+            session['user_id'] = user.id
+            session['oauth_provider'] = user.oauth_provider
+            g.user = user
+            return redirect(url_for('home'))
+        else:
+            return error_login('Usuario ya existe')
+
+def error_login(msj):
+    g.user = None
+    return "Error intentando logear [%s]"%msj
 
 ##Rutas para usuarios registrados
 @app.route("/my-projects")
@@ -176,6 +216,7 @@ def project(_id):
 
 #Estas rutas se colocan para correr la aplicacion localamente.
 #En produccion el servidor web se encargara de direccionar el contenido estatico.
+ 
 @app.route("/css/<path:filename>")
 def css(filename):
 	return send_from_directory('static/css/',filename)

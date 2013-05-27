@@ -1,18 +1,34 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="jumbo">
-	<form class="form-horizontal">
+	<form class="form-horizontal" method='POST'>
 		<fieldset>
 
 			<!-- Form Name -->
-			<legend>Registro de nuevo usuario</legend>
+			<legend>Registro</legend>
 
 			<!-- Text input-->
 			<div class="control-group">
 				<label class="control-label">Nombre de usuario:</label>
 				<div class="controls">
-					<input id="usuario" name="usuario" type="text" placeholder="Nombre de usuario" class="input-xlarge" required="">
-					<p class="help-block">Nombre que aparecerá en su perfil.</p>
+					<input id="nickname" name="nickname" type="text" placeholder="Nombre de usuario" class="input-xlarge" required="">
+					<p class="help-block">Nombre que aparecerá en su perfil</p>
+				</div>
+			</div>
+
+			<!-- Text input-->
+			<div class="control-group">
+				<label class="control-label">Nombre:</label>
+				<div class="controls">
+					<input id="first_name" name="first_name" type="text" placeholder="Ingrese su nombre" class="input-xlarge" required="">
+				</div>
+			</div>
+
+			<!-- Text input-->
+			<div class="control-group">
+				<label class="control-label">Apellido:</label>
+				<div class="controls">
+					<input id="last_name" name="last_name" type="text" placeholder="Ingrese su apellido" class="input-xlarge" required="">
 				</div>
 			</div>
 
@@ -20,8 +36,7 @@
 			<div class="control-group">
 				<label class="control-label">Correo electrónico:</label>
 				<div class="controls">
-					<input id="correo" name="correo" type="text" placeholder="micorreo@midominio.com" class="input-xlarge" required="">
-					<p class="help-block">Su correo electrónico no será público</p>
+					<input id="email" name="email" type="text" placeholder="kuak@me.com" class="input-xlarge" required="">
 				</div>
 			</div>
 
@@ -29,24 +44,8 @@
 			<div class="control-group">
 				<label class="control-label">Contraseña:</label>
 				<div class="controls">
-					<input id="password" name="password" type="password" placeholder="micontraseña" class="input-xlarge" required="">
-					<p class="help-block">Utilice 6 o más caracteres</p>
-				</div>
-			</div>
-
-			<!-- File Button --> 
-			<div class="control-group">
-				<label class="control-label">Avatar:</label>
-				<div class="controls">
-					<input id="avatar" name="avatar" class="input-file" type="file">
-				</div>
-			</div>
-
-			<!-- Textarea -->
-			<div class="control-group">
-				<label class="control-label">Acerca de mí:</label>
-				<div class="controls">                     
-					<textarea id="acerca" name="acerca"></textarea>
+					<input id="password" name="password" type="password" placeholder="********" class="input-xlarge" required="">
+					<p class="help-block">Utilice al menos 6 caracteres</p>
 				</div>
 			</div>
 
