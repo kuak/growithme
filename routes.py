@@ -128,7 +128,7 @@ def get_facebook_oauth_token():
 
 @app.route('/')
 def home():
-	proyectos = Proyecto.query.all()
+    proyectos = Proyecto.query.all()
     for proy in proyectos:
         proy.days = helpers.fun_daysDiff(proy.fecha_inicio, proy.fecha_fin)
     return render_template("home.html", proyectos = proyectos)
@@ -216,22 +216,7 @@ def project(_id):
 
 #Estas rutas se colocan para correr la aplicacion localamente.
 #En produccion el servidor web se encargara de direccionar el contenido estatico.
-@app.route("/css/<path:filename>")
-def css(filename):
-    return send_from_directory('static/css/',filename)
-
-@app.route("/font-awesome/css/<path:filename>")
-def css(filename):
-    return send_from_directory('static/font-awesome/css/',filename)
-
-@app.route("/font-awesome/font/<path:filename>")
-def css(filename):
-    return send_from_directory('static/font-awesome/font/',filename)    
-
-@app.route("/font-awesome/less/<path:filename>")
-def css(filename):
-    return send_from_directory('static/font-awesome/less/',filename)
-    
+ 
 @app.route("/css/<path:filename>")
 def css(filename):
 	return send_from_directory('static/css/',filename)
