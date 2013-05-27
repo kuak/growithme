@@ -5,8 +5,10 @@ from flask import send_from_directory
 #Uso del modelo
 from backend.model import db, Usuario
 from backend.model import Proyecto
+#Uso de helpers
+import backend.helpers as helpers 
 #Manejo de archivos
-#from flask_uploads import UploadSet, IMAGES, configure_uploads
+from flask_uploads import UploadSet, IMAGES, configure_uploads
 #authenticate
 from flask import g, session, request, flash, redirect
 import backend.auth as auth
@@ -15,8 +17,8 @@ app = Flask(__name__)
 app.secret_key = 'Kuak Team key'
 
 #Carpeta para fotos de los proyectos
-#fotos = UploadSet(name = 'fotos', extensions = IMAGES, default_dest=lambda app: "fotos/")
-#configure_uploads(app, fotos)
+imagenes = UploadSet(name = 'fotos', extensions = IMAGES, default_dest=lambda app: "fotos/")
+configure_uploads(app, imagenes)
 
 #login 
 @app.before_request
@@ -37,17 +39,20 @@ def get_twitter_token():
 
 @app.route("/login",methods=['GET','POST'])
 def login():
-    if request.method == 'GET':
-        return render_template("login.html")
-    else:
-        user = Usuario.query.filter(Usuario.nickname==request.form['nickname']).filter(Usuario.password==request.form['password']).first()
-        if user is None:
-            return error_login('Usuario no existe')
+    if g.user is None:
+        if request.method == 'GET':
+            return render_template("login.html")
         else:
-            session['user_id'] = user.id
-            session['oauth_provider'] = user.oauth_provider
-            g.user = user
-            return redirect(url_for('home'))
+            user = Usuario.query.filter(Usuario.email==request.form['email']).filter(Usuario.password==request.form['password']).first()
+            if user is None:
+                return error_login('Usuario no existe')
+            else:
+                session['user_id'] = user.id
+                session['oauth_provider'] = user.oauth_provider
+                g.user = user
+                return redirect(url_for('home'))
+    else:
+        return "Usuario logueado "+str(g.user.nickname)
 
 
 @app.route("/logintw")
@@ -98,7 +103,7 @@ def callback_facebook(resp):
     user_tmp.oauth_token = resp['access_token']
     g.user = user_tmp
 
-    me = auth.facebook.get('/me?fields=name,email')
+    me = auth.facebook.get('/me')
     user = Usuario.query.filter(Usuario.nickname==me.data['name']).filter(Usuario.email==me.data['email']).first()
 
     if user is None:
@@ -117,18 +122,16 @@ def callback_facebook(resp):
 
 @auth.facebook.tokengetter
 def get_facebook_oauth_token():
-    return g.user.oauth_token
+    return (g.user.oauth_token,'')
 
 #- fin login
 
 @app.route('/')
 def home():
-	#proyectos = dProyecto.query.all()
-	#return render_template("home.html", proyectos = proyectos)
-    if g.user is None:
-        return 'Usuario no registrado'
-    else:
-        return str(g.user.nickname)
+	proyectos = Proyecto.query.all()
+    for proy in proyectos:
+        proy.days = helpers.fun_daysDiff(proy.fecha_inicio, proy.fecha_fin)
+    return render_template("home.html", proyectos = proyectos)
 
 @app.route("/about")
 def about():
@@ -159,26 +162,76 @@ def error_login(msj):
     return "Error intentando logear [%s]"%msj
 
 ##Rutas para usuarios registrados
+@app.route("/my-projects")
+def my_projects():
+    proyectos = Proyecto.query.all()
+    for pro in proyectos:
+        pro.days = helpers.fun_daysDiff(pro.fecha_inicio, pro.fecha_fin)
+    return render_template("my_projects.html", proyectos = proyectos)
+
 @app.route("/new-project")
 def new_project():
 	return render_template("new_project.html")
 
+@app.route("/modify-project/<path:_id>")
+def modify_project(_id):
+    proyecto = Proyecto.query.filter_by(id = _id).first()
+    return render_template("modify_project.html", proyecto = proyecto)
+
 @app.route("/add-project", methods=['POST'])
 def add_project():
-    new_pro = Proyecto(request.form['nombre_proyecto'], request.form['descripcion'], 1)
+    new_pro = Proyecto(request.form['nombre_proyecto'], request.form['descripcion'], request.form['meta'], 1)
+    
+    if request.method == 'POST' and 'foto' in request.files:
+        filename = imagenes.save(request.files['foto'])
+        new_pro.url_imagen = filename
     db.session.add(new_pro)
     db.session.commit()
-    #if request.method == 'POST' and 'foto' in request.files:
-        #filename = fotos.save(request.files['foto'])
-    flash('Nuevo proyecto ha sido guardado con exito')
-    return redirect(url_for('home'))
+
+    flash("Nuevo proyecto guardado con exito")
+    return redirect(url_for('my_projects'))
+
+@app.route("/upd-project", methods=['POST'])
+def upd_project():
+    upd_pro = Proyecto.query.filter_by(id = request.form['id']).first()
+    upd_pro.nombre_proyecto = request.form['nombre_proyecto']
+    upd_pro.descripcion = request.form['descripcion']
+    upd_pro.meta = request.form['meta']
+    db.session.commit()
+    flash("Proyecto guardado con exito")
+    return redirect(url_for('my_projects'))
 
 @app.route("/projects")
-def perfil():
-    return render_template("projects.html")
+def projects():
+    proyectos = Proyecto.query.all()
+    for pro in proyectos:
+        pro.days = helpers.fun_daysDiff(pro.fecha_inicio, pro.fecha_fin)
+    return render_template("projects.html", proyectos = proyectos)
+
+@app.route("/project/<path:_id>")
+def project(_id):
+    proyecto = Proyecto.query.filter_by(id = _id).first()
+    proyecto.days = helpers.fun_daysDiff(proyecto.fecha_inicio, proyecto.fecha_fin)
+    return render_template("project.html", proyecto = proyecto)
 
 #Estas rutas se colocan para correr la aplicacion localamente.
 #En produccion el servidor web se encargara de direccionar el contenido estatico.
+@app.route("/css/<path:filename>")
+def css(filename):
+    return send_from_directory('static/css/',filename)
+
+@app.route("/font-awesome/css/<path:filename>")
+def css(filename):
+    return send_from_directory('static/font-awesome/css/',filename)
+
+@app.route("/font-awesome/font/<path:filename>")
+def css(filename):
+    return send_from_directory('static/font-awesome/font/',filename)    
+
+@app.route("/font-awesome/less/<path:filename>")
+def css(filename):
+    return send_from_directory('static/font-awesome/less/',filename)
+    
 @app.route("/css/<path:filename>")
 def css(filename):
 	return send_from_directory('static/css/',filename)
