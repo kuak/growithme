@@ -55,3 +55,5 @@ def existe_usuario(user):
     u = Usuario.query.filter(Usuario.nickname==user.nickname).filter(Usuario.email==user.email).first()
     return u
 
+
+#def login_post():
