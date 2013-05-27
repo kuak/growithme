@@ -22,9 +22,9 @@
                         <h2>{{proyecto.nombre_proyecto}}</h2>
                         <img src="{{ url_for('fotos', filename=proyecto.url_imagen) }}"></img>
                         <p>{{proyecto.descripcion}}</p>
-                        <h3>{{proyecto.meta}}</h3>
+                        <p>Propuesto el: {{proyecto.fecha_inicio.strftime('%d/%m/%Y')}}</p>
+                        <h3>0.00 / {{proyecto.meta|format_currency}}</h3>
                         <p><a class="btn" href="project/{{proyecto.id}}">Seguir leyendo »</a></p>
-                        <p>{{proyecto.fecha_inicio}}</p>
                         <h2>Quedan {{proyecto.days}} días</h2>
                     </div>
                 </li>

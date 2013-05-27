@@ -54,7 +54,7 @@
     					<td>{{ proyecto.fecha_fin.strftime('%d/%m/%Y') }}</td>
                         <td>
                             <div class="btn-group">
-                                <a href="{{url_for('project', _id = proyecto.id)}}" class="btn btn-inverse disabled">
+                                <a target="_blank" href="{{url_for('project', _id = proyecto.id)}}" class="btn btn-inverse disabled">
                                     <i class="icon-white icon-eye-open"></i>
                                 </a>
                                 <a href="{{url_for('modify_project', _id = proyecto.id)}}" class="btn btn-inverse disabled">

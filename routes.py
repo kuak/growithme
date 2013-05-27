@@ -2,6 +2,8 @@ from flask import Flask
 from flask import render_template
 from flask import url_for
 from flask import send_from_directory
+#from jinja2 import Environment
+import jinja2
 #Uso del modelo
 from backend.model import db, Usuario
 from backend.model import Proyecto
@@ -19,6 +21,11 @@ app.secret_key = 'Kuak Team key'
 #Carpeta para fotos de los proyectos
 imagenes = UploadSet(name = 'fotos', extensions = IMAGES, default_dest=lambda app: "fotos/")
 configure_uploads(app, imagenes)
+
+#Filtros personalados
+#env = Environment('app')
+#env.filters['format_currency'] = helpers.format_currency
+jinja2.filters.FILTERS['format_currency'] = helpers.format_currency
 
 #login 
 @app.before_request
@@ -180,7 +187,7 @@ def modify_project(_id):
 
 @app.route("/add-project", methods=['POST'])
 def add_project():
-    new_pro = Proyecto(request.form['nombre_proyecto'], request.form['descripcion'], request.form['meta'], 1)
+    new_pro = Proyecto(request.form['nombre_proyecto'], request.form['descripcion'], str(request.form['meta']).replace(',', ''), 1)
     
     if request.method == 'POST' and 'foto' in request.files:
         filename = imagenes.save(request.files['foto'])
@@ -196,7 +203,7 @@ def upd_project():
     upd_pro = Proyecto.query.filter_by(id = request.form['id']).first()
     upd_pro.nombre_proyecto = request.form['nombre_proyecto']
     upd_pro.descripcion = request.form['descripcion']
-    upd_pro.meta = request.form['meta']
+    upd_pro.meta = str(request.form['meta']).replace(',', '')
     db.session.commit()
     flash("Proyecto guardado con exito")
     return redirect(url_for('my_projects'))

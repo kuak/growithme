@@ -52,8 +52,8 @@
 			<div class="control-group">
 				<label class="control-label">Meta:</label>
 				<div class="controls">
-					<input id="meta" name="meta" type="text" placeholder="Mi meta" class="input-xlarge" required="" value="{{proyecto.meta}}">
-					<p class="help-block">Meta de recaudación de fondos</p>
+					<input id="meta" name="meta" type="text" placeholder="Mi meta" class="input-xlarge" required="" value="{{proyecto.meta|format_currency}}">
+					<p class="help-block">Puede o no llevar coma y/o punto decimal</p>
 				</div>
 			</div>
 

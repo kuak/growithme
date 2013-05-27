@@ -9,12 +9,12 @@
                         <h2>{{proyecto.nombre_proyecto}}</h2>
                         <img src="{{ url_for('fotos', filename=proyecto.url_imagen) }}"></img>
                         <p>{{proyecto.descripcion}}</p>
-                        <p>{{proyecto.fecha_inicio}}</p>
-                        <p>{{proyecto.fecha_fin}}</p>
+                        <p>Propuesto el: {{proyecto.fecha_inicio.strftime('%d/%m/%Y')}}</p>
+                        <p>Último día para donar: {{proyecto.fecha_fin.strftime('%d/%m/%Y')}}</p>
                     </div>
                 </li>
                 <li class="span4">
-                    <h3>0 / {{proyecto.meta}}</h3>
+                    <h3>0 / {{proyecto.meta|format_currency}}</h3>
                     <h2>Quedan {{proyecto.days}} días</2>
                     <a href="#" class="btn btn-large btn-success">Apoyanos ya!</a>
                 </li>
