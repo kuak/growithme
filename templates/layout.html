@@ -1,30 +1,21 @@
-<!DO
-CTYPE html>
+<!DOCTYPE HTML>
+
 <html lang="es">
   <head>
     <meta charset="utf-8">
     <title>GroWithMe</title>
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-	<link href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/bootstrap-responsive.css') }}" rel="stylesheet">
 	<link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
 	
-		
-	
-	
-	
     <style>
-		.navbar .brand { max-height: 40px; overflow: visible;padding-top: 2;padding-bottom: 0; }
+		.navbar .brand { max-height: 38px; overflow: visible;padding-top: 0;padding-bottom: 0; }
+		.navbar-inner{-webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0;}
 
 			
     </style>
 
-    <script>
-    $(document).ready(function () {
-    	$('label.tree-toggler').click(function () {
-    		$(this).parent().children('ul.tree').toggle(300);
-    	});
-    });
-    </script>
+
 
   </head>
   <body>
@@ -55,8 +46,8 @@ CTYPE html>
 							  <form method="post" action="login" accept-charset="UTF-8">
 								
 								<div class="input-prepend">
-									<span class="add-on"><i class="icon-globe"></i></span>
-									<input class="span2" type="text" placeholder="Nombre de usuario" id="usuario" name="usuario">
+									<span class="add-on"><i class="icon-envelope"></i></span>
+									<input class="span" type="password" placeholder="Nombre Usuario" id="usuario" name="usuario">
 								</div>
 								<div class="input-prepend">
 									<span class="add-on"><i class="icon-key"></i></span>
@@ -73,19 +64,8 @@ CTYPE html>
 							</div>
 						  </li>
 					  </ul>
-				  
-					
 				</div>
-					
-			
-			
-				
-			
-				
-					
-					
-		
-				
+
           </div><!--/.nav-collapse -->
         </div>
       </div>
